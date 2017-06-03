@@ -74,7 +74,7 @@ def main():
 	parser = argparse.ArgumentParser()
 
 	# Capture
-	parser.add_argument("-c", "--capture", help="capture a picture", action="store_true")
+	parser.add_argument("-c", "--capture", default=False, help="capture a picture", action="store_true")
 
 	# Save to file
 	parser.add_argument("--file", help="write captured image to a file", action="store_true")
