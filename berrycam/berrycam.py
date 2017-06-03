@@ -74,7 +74,7 @@ def main():
 	parser = argparse.ArgumentParser()
 
 	# Capture
-	parser.add_argument("-c", "--capture", default=False, help="capture a picture", action="store_true")
+	parser.add_argument("-c", "--capture", required=True, help="capture a picture", action="store_true")
 
 	# Save to file
 	parser.add_argument("--file", help="write captured image to a file", action="store_true")
@@ -101,10 +101,6 @@ def main():
 	# Verbose mode
 	parser.add_argument("--verbose", "-v", help="increase output verbosity", action="store_true")
 	args = parser.parse_args()
-
-	if not args.capture:
-		parser.print_help()
-		exit()
 
 	if args.verbose:
 		logging.basicConfig(level=logging.DEBUG)
