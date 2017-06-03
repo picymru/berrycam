@@ -6,7 +6,7 @@ from time import sleep
 from picamera import PiCamera
 from ftplib import FTP
 
-def acquire_image(args):
+def acquire_image(log, args):
 	output_stream = BytesIO()
 	camera = PiCamera()
 	try:
@@ -49,9 +49,9 @@ def upload_ftp(data, args):
 	except:
 		return False
 
-def process(args):
+def process(log, args):
 	log.info("Acquiring image...")
-	image = acquire_image(args)
+	image = acquire_image(log, args)
 
 	if args.file:
 		log.info("Writing image to {}".format(args.filename))
@@ -111,7 +111,7 @@ def main():
 		logging.basicConfig(level=logging.INFO)
 	log = logging.getLogger(__name__)
 
-	process(args)
+	process(log, args)
 
 if __name__ == '__main__':
 	main()
