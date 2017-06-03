@@ -104,6 +104,7 @@ def main():
 
 	if not args.capture:
 		parser.print_help()
+		exit()
 
 	if args.verbose:
 		logging.basicConfig(level=logging.DEBUG)
