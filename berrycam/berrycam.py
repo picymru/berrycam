@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+
+import os, sys, argparse, logging, boto3
+from io import BytesIO
+from time import sleep
+from picamera import PiCamera
+from ftplib import FTP
+
+def acquire_image(args):
+	output_stream = BytesIO()
+	camera = PiCamera()
+	try:
+		camera.resolution = (args.res_width, args.res_height)
+		camera.start_preview()
+		# Camera warm-up time
+		sleep(2)
+		camera.capture(output_stream, 'jpeg')
+		camera.stop_preview()
+		output_stream.seek(0)
+		return output_stream.getvalue()
+	except:
+		log.fatal("Unable to obtain image from camera, two processes may be trying at the same time")
+		exit()
+	finally:
+		camera.close()
+
+def upload_s3(data, args):
+	try:
+		s3 = boto3.client(
+			's3',
+			endpoint_url='https://{}'.format(args.s3_endpoint),
+			aws_access_key_id = args.access_key,
+			aws_secret_access_key = args.secret_key
+		)
+		bytes_stream = BytesIO(data)
+		s3.upload_fileobj(bytes_stream, args.bucket_name, args.bucket_path)
+		s3.put_object_acl(ACL='public-read', Bucket=args.bucket_name, Key=args.bucket_path)
+		return True
+	except:
+		return False
+
+def upload_ftp(data, args):
+	try:
+		bytes_stream = BytesIO(data)
+		ftp = FTP(args.server)
+		ftp.login(args.username, args.password)
+		ftp.storbinary('STOR image.jpeg', bytes_stream)
+		return True
+	except:
+		return False
+
+def process(args):
+	log.info("Acquiring image...")
+	image = acquire_image(args)
+	if args.file:
+		log.info("Writing image to {} (requested using -w)".format(args.filename))
+		with open(args.filename, 'wb') as f:
+			image = image
+			f.write(image)
+			f.close()
+	
+	if args.s3:
+		log.info("Writing image to {}.{}/{} (requested using --s3)".format(args.s3_endpoint, args.bucket_name, args.bucket_path))
+		upload_s3(image, args)
+	
+	# Now we have the data acquired, we can upload it
+	log.info("Uploading to {} ({})".format(args.server, args.username))
+	upload_ftp(image, args)
+
+if __name__ == '__main__':
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--server", "-s", default="webcam.wunderground.com", help="server to upload pictures taken using this application")
+	parser.add_argument("--username", "-u", default=os.getenv('WUNDER_USERNAME', ''), help="wunderground camera id")
+	parser.add_argument("--password", "-p", default=os.getenv('WUNDER_PASSWORD', ''), help="wunderground account password")
+	
+	parser.add_argument("--file", help="write captured image to a file", action="store_true")
+	parser.add_argument("--filename", default="test.jpeg", help="file name / path")
+	
+	parser.add_argument("--s3", help="write captured image to s3", action="store_true")
+	parser.add_argument("--s3-endpoint", default=os.getenv('S3_ENDPOINT', 'objects-us-west-1.dream.io'), help="s3 endpoint")
+	parser.add_argument("--access-key", default=os.getenv('S3_ACCESS_KEY', ''), help="s3 access key")
+	parser.add_argument("--secret-key", default=os.getenv('S3_SECRET_KEY', ''), help="s3 secret key")
+	parser.add_argument("--bucket-name", default=os.getenv('S3_BUCKET_NAME', ''), help="s3 bucket name")
+	parser.add_argument("--bucket-path", default=os.getenv('S3_BUCKET_PATH', 'iot/image.jpeg'), help="s3 bucket path")
+	
+	parser.add_argument("--res-width", default=1024, help="image width")
+	parser.add_argument("--res-height", default=768, help="image height")
+
+	parser.add_argument("--verbose", "-v", help="increase output verbosity", action="store_true")
+	args = parser.parse_args()
+
+	if args.verbose:
+		logging.basicConfig(level=logging.DEBUG)
+	else:
+		logging.basicConfig(level=logging.INFO)
+	log = logging.getLogger(__name__)
+
+	process(args)
