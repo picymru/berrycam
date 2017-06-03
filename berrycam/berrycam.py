@@ -53,7 +53,7 @@ def process(log, args):
 	log.info("Acquiring image...")
 	image = acquire_image(log, args)
 
-	if args.file:
+	if args.output:
 		log.info("Writing image to {}".format(args.filename))
 		with open(args.filename, 'wb') as f:
 			image = image
