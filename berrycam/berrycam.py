@@ -42,8 +42,8 @@ def upload_s3(data, args):
 def upload_ftp(data, args):
 	try:
 		bytes_stream = BytesIO(data)
-		ftp = FTP(args.server)
-		ftp.login(args.username, args.password)
+		ftp = FTP(args.ftp_server)
+		ftp.login(args.ftp_username, args.ftp_password)
 		ftp.storbinary('STOR image.jpeg', bytes_stream)
 		return True
 	except:
@@ -73,12 +73,8 @@ def main():
 
 	parser = argparse.ArgumentParser()
 
-	# Capture
-	parser.add_argument("-c", "--capture", required=True, help="capture a picture", action="store_true")
-
 	# Save to file
-	parser.add_argument("--file", help="write captured image to a file", action="store_true")
-	parser.add_argument("--filename", default="test.jpeg", help="file name / path")
+	parser.add_argument("-o", "--output", required=True, help="file name / path")
 
 	# Save to FTP
 	parser.add_argument("--ftp", help="write captured image to ftp", action="store_true")
@@ -91,8 +87,8 @@ def main():
 	parser.add_argument("--s3-endpoint", default=os.getenv('S3_ENDPOINT', 'objects-us-west-1.dream.io'), help="s3 endpoint")
 	parser.add_argument("--access-key", default=os.getenv('S3_ACCESS_KEY', ''), help="s3 access key")
 	parser.add_argument("--secret-key", default=os.getenv('S3_SECRET_KEY', ''), help="s3 secret key")
-	parser.add_argument("--bucket-name", default=os.getenv('S3_BUCKET_NAME', ''), help="s3 bucket name")
-	parser.add_argument("--bucket-path", default=os.getenv('S3_BUCKET_PATH', 'iot/image.jpeg'), help="s3 bucket path")
+	parser.add_argument("--bucket-name", help="s3 bucket name")
+	parser.add_argument("--bucket-path", help="s3 bucket path")
 	
 	# General configuration
 	parser.add_argument("--res-width", default=1024, help="image width")
