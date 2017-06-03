@@ -67,7 +67,7 @@ def process(args):
 	log.info("Uploading to {} ({})".format(args.server, args.username))
 	upload_ftp(image, args)
 
-if __name__ == '__main__':
+def main():
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--server", "-s", default="webcam.wunderground.com", help="server to upload pictures taken using this application")
@@ -97,3 +97,6 @@ if __name__ == '__main__':
 	log = logging.getLogger(__name__)
 
 	process(args)
+
+if __name__ == '__main__':
+	main()

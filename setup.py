@@ -19,7 +19,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.1',
+    version='0.1.2',
 
     description='berrycam makes taking pictures with your Raspberry Pi easy!',
     long_description=long_description,
@@ -60,7 +60,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'berrycam = berrycam.berrycam',
+            'berrycam = berrycam.berrycam:main',
         ],
     },
     install_requires=['picamera', 'boto3']
