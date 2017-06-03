@@ -52,31 +52,41 @@ def upload_ftp(data, args):
 def process(args):
 	log.info("Acquiring image...")
 	image = acquire_image(args)
+
 	if args.file:
-		log.info("Writing image to {} (requested using -w)".format(args.filename))
+		log.info("Writing image to {}".format(args.filename))
 		with open(args.filename, 'wb') as f:
 			image = image
 			f.write(image)
 			f.close()
 	
 	if args.s3:
-		log.info("Writing image to {}.{}/{} (requested using --s3)".format(args.s3_endpoint, args.bucket_name, args.bucket_path))
+		log.info("Writing image to {}.{}/{}".format(args.s3_endpoint, args.bucket_name, args.bucket_path))
 		upload_s3(image, args)
 	
 	# Now we have the data acquired, we can upload it
-	log.info("Uploading to {} ({})".format(args.server, args.username))
-	upload_ftp(image, args)
+	if args.ftp:
+		log.info("Writing image to FTP {} ({})".format(args.server, args.username))
+		upload_ftp(image, args)
 
 def main():
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--server", "-s", default="webcam.wunderground.com", help="server to upload pictures taken using this application")
-	parser.add_argument("--username", "-u", default=os.getenv('WUNDER_USERNAME', ''), help="wunderground camera id")
-	parser.add_argument("--password", "-p", default=os.getenv('WUNDER_PASSWORD', ''), help="wunderground account password")
-	
+
+	# Capture
+	parser.add_argument("-c", "--capture", help="capture a picture", action="store_true")
+
+	# Save to file
 	parser.add_argument("--file", help="write captured image to a file", action="store_true")
 	parser.add_argument("--filename", default="test.jpeg", help="file name / path")
+
+	# Save to FTP
+	parser.add_argument("--ftp", help="write captured image to ftp", action="store_true")
+	parser.add_argument("--ftp-server", "-s", default="webcam.wunderground.com", help="ftp server hostname")
+	parser.add_argument("--ftp-username", "-u", default=os.getenv('FTP_USERNAME', ''), help="ftp username")
+	parser.add_argument("--ftp-password", "-p", default=os.getenv('FTP_PASSWORD', ''), help="ftp password")
 	
+	# Save to S3
 	parser.add_argument("--s3", help="write captured image to s3", action="store_true")
 	parser.add_argument("--s3-endpoint", default=os.getenv('S3_ENDPOINT', 'objects-us-west-1.dream.io'), help="s3 endpoint")
 	parser.add_argument("--access-key", default=os.getenv('S3_ACCESS_KEY', ''), help="s3 access key")
@@ -84,11 +94,16 @@ def main():
 	parser.add_argument("--bucket-name", default=os.getenv('S3_BUCKET_NAME', ''), help="s3 bucket name")
 	parser.add_argument("--bucket-path", default=os.getenv('S3_BUCKET_PATH', 'iot/image.jpeg'), help="s3 bucket path")
 	
+	# General configuration
 	parser.add_argument("--res-width", default=1024, help="image width")
 	parser.add_argument("--res-height", default=768, help="image height")
 
+	# Verbose mode
 	parser.add_argument("--verbose", "-v", help="increase output verbosity", action="store_true")
 	args = parser.parse_args()
+
+	if not args.capture:
+		parser.print_help()
 
 	if args.verbose:
 		logging.basicConfig(level=logging.DEBUG)
