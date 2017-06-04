@@ -23,14 +23,14 @@ Taking a picture is easy
 
 ::
 
-    $ berrycam -o image.jpeg
+    $ berrycam --file --file-name image.jpeg
 
 Taking a picture, and uploading it to an FTP server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
-    $ berrycam -o image.jpeg --ftp --ftp-server ftp.localhost --ftp-username user --ftp-password password
+    $ berrycam --ftp --ftp-server ftp.localhost --ftp-username user --ftp-password password
 
 For more help
 ~~~~~~~~~~~~~

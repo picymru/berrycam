@@ -64,12 +64,15 @@ def process(log, args):
 	log.info("Acquiring image...")
 	image = acquire_image(log, args)
 
-	if args.output:
-		log.info("Writing image to {}".format(args.output))
-		with open(args.output, 'wb') as f:
+	if args.file and not args.file == '':
+		log.info("Writing image to {}".format(args.file_name))
+		with open(file_name, 'wb') as f:
 			image = image
 			f.write(image)
 			f.close()
+	else:
+		logs.fatal("You must provide a file name to save to (use --file-name)")
+		exit()
 	
 	if args.s3:
 		log.info("Writing image to {}.{}/{}".format(args.s3_endpoint, args.bucket_name, args.bucket_path))
@@ -85,7 +88,8 @@ def main():
 	parser = argparse.ArgumentParser()
 
 	# Save to file
-	parser.add_argument("-o", "--output", required=True, help="file name / path")
+	parser.add_argument("--file", help="write captured image to file", action="store_true")
+	parser.add_argument("--file-name", default='', help="file name / path")
 
 	# Save to FTP
 	parser.add_argument("--ftp", help="write captured image to ftp", action="store_true")
@@ -114,6 +118,10 @@ def main():
 	else:
 		logging.basicConfig(level=logging.INFO)
 	log = logging.getLogger(__name__)
+
+	if (args.file == False) and (args.ftp == False) and (args.s3 == False):
+		logs.fatal("You must select an output method (or multiple output methods) (--file, --ftp or --s3)")
+		exit()
 
 	process(log, args)
 
