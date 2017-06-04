@@ -24,6 +24,20 @@ def acquire_image(log, args):
 	finally:
 		camera.close()
 
+def upload_file(data, args)
+	if args.file_name == "":
+		log.fatal("You must provide a filename to save data to. (use --file-name")
+		exit()
+
+	try:
+		with open(args.file_name, 'wb') as f:
+			image = image
+			f.write(image)
+			f.close()
+	except:
+		log.fatal("Unable to save image to filesystem. Please check location is writable")
+		exit()
+
 def upload_s3(data, args):
 	try:
 		if args.access_key in ['', None] or args.secret_key in ['', None]:
@@ -64,15 +78,9 @@ def process(log, args):
 	log.info("Acquiring image...")
 	image = acquire_image(log, args)
 
-	if args.file and not args.file == '':
+	if args.file:
 		log.info("Writing image to {}".format(args.file_name))
-		with open(args.file_name, 'wb') as f:
-			image = image
-			f.write(image)
-			f.close()
-	else:
-		log.fatal("You must provide a file name to save to (use --file-name)")
-		exit()
+		upload_file(image, args)
 
 	if args.s3:
 		log.info("Writing image to {}.{}/{}".format(args.s3_endpoint, args.bucket_name, args.bucket_path))
@@ -89,7 +97,7 @@ def main():
 
 	# Save to file
 	parser.add_argument("--file", help="write captured image to file", action="store_true")
-	parser.add_argument("--file-name", default='', help="file name / path")
+	parser.add_argument("--file-name", default="", help="file name / path")
 
 	# Save to FTP
 	parser.add_argument("--ftp", help="write captured image to ftp", action="store_true")

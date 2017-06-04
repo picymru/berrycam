@@ -1,5 +1,5 @@
 NAME := berrycam
-VERSION := 0.2.7
+VERSION := 0.2.8
 
 .PHONY: build-docs
 build-docs:
