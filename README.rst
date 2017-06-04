@@ -38,6 +38,40 @@ For more help
 ::
 
     $ berrycam --help
+    usage: berrycam [-h] -o OUTPUT [--ftp] [--ftp-server FTP_SERVER]
+                    [--ftp-username FTP_USERNAME] [--ftp-password FTP_PASSWORD]
+                    [--s3] [--s3-endpoint S3_ENDPOINT] [--access-key ACCESS_KEY]
+                    [--secret-key SECRET_KEY] [--bucket-name BUCKET_NAME]
+                    [--bucket-path BUCKET_PATH] [--res-width RES_WIDTH]
+                    [--res-height RES_HEIGHT] [--verbose]
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -o OUTPUT, --output OUTPUT
+                            file name / path
+      --ftp                 write captured image to ftp
+      --ftp-server FTP_SERVER, -s FTP_SERVER
+                            ftp server hostname
+      --ftp-username FTP_USERNAME, -u FTP_USERNAME
+                            ftp username
+      --ftp-password FTP_PASSWORD, -p FTP_PASSWORD
+                            ftp password
+      --s3                  write captured image to s3
+      --s3-endpoint S3_ENDPOINT
+                            s3 endpoint
+      --access-key ACCESS_KEY
+                            s3 access key
+      --secret-key SECRET_KEY
+                            s3 secret key
+      --bucket-name BUCKET_NAME
+                            s3 bucket name
+      --bucket-path BUCKET_PATH
+                            s3 bucket path
+      --res-width RES_WIDTH
+                            image width
+      --res-height RES_HEIGHT
+                            image height
+      --verbose, -v         increase output verbosity
 
 License
 -------
