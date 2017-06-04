@@ -107,7 +107,7 @@ def main():
 	
 	# Save to S3
 	parser.add_argument("--s3", help="write captured image to s3", action="store_true")
-	parser.add_argument("--s3-endpoint", default=os.getenv('S3_ENDPOINT', 'objects-us-west-1.dream.io'), help="s3 endpoint")
+	parser.add_argument("--s3-endpoint", default='s3.amazonaws.com', help="s3 endpoint")
 	parser.add_argument("--access-key", default=os.getenv('S3_ACCESS_KEY', ''), help="s3 access key")
 	parser.add_argument("--secret-key", default=os.getenv('S3_SECRET_KEY', ''), help="s3 secret key")
 	parser.add_argument("--bucket-name", help="s3 bucket name")
