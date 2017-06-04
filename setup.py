@@ -19,7 +19,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.2.0',
+    version='0.2.1',
 
     description='berrycam makes taking pictures with your Raspberry Pi easy!',
     long_description=long_description,
@@ -48,7 +48,7 @@ setup(
         'Environment :: Console',
 
         # Indicate who your project is intended for
-        'Intended Audience :: Developers'
+        'Intended Audience :: Developers',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
