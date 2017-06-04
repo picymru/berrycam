@@ -66,7 +66,7 @@ def process(log, args):
 
 	if args.file and not args.file == '':
 		log.info("Writing image to {}".format(args.file_name))
-		with open(file_name, 'wb') as f:
+		with open(args.file_name, 'wb') as f:
 			image = image
 			f.write(image)
 			f.close()
