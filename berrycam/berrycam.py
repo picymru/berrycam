@@ -24,7 +24,7 @@ def acquire_image(log, args):
 	finally:
 		camera.close()
 
-def upload_file(data, args)
+def upload_file(data, args):
 	if args.file_name == "":
 		log.fatal("You must provide a filename to save data to. (use --file-name")
 		exit()
