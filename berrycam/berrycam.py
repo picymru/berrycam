@@ -88,7 +88,7 @@ def process(log, args):
 	
 	# Now we have the data acquired, we can upload it
 	if args.ftp:
-		log.info("Writing image to FTP {} ({})".format(args.server, args.username))
+		log.info("Writing image to FTP {} ({})".format(args.ftp_server, args.ftp_username))
 		upload_ftp(image, args)
 
 def main():
