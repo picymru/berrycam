@@ -38,16 +38,18 @@ For more help
 ::
 
     $ berrycam --help
-    usage: berrycam [-h] -o OUTPUT [--ftp] [--ftp-server FTP_SERVER]
-                    [--ftp-username FTP_USERNAME] [--ftp-password FTP_PASSWORD]
-                    [--s3] [--s3-endpoint S3_ENDPOINT] [--access-key ACCESS_KEY]
+    usage: berrycam [-h] [--file] [--file-name FILE_NAME] [--ftp]
+                    [--ftp-server FTP_SERVER] [--ftp-username FTP_USERNAME]
+                    [--ftp-password FTP_PASSWORD] [--s3]
+                    [--s3-endpoint S3_ENDPOINT] [--access-key ACCESS_KEY]
                     [--secret-key SECRET_KEY] [--bucket-name BUCKET_NAME]
                     [--bucket-path BUCKET_PATH] [--res-width RES_WIDTH]
                     [--res-height RES_HEIGHT] [--verbose]
 
     optional arguments:
       -h, --help            show this help message and exit
-      -o OUTPUT, --output OUTPUT
+      --file                write captured image to file
+      --file-name FILE_NAME
                             file name / path
       --ftp                 write captured image to ftp
       --ftp-server FTP_SERVER, -s FTP_SERVER
