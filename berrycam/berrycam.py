@@ -71,9 +71,9 @@ def process(log, args):
 			f.write(image)
 			f.close()
 	else:
-		logs.fatal("You must provide a file name to save to (use --file-name)")
+		log.fatal("You must provide a file name to save to (use --file-name)")
 		exit()
-	
+
 	if args.s3:
 		log.info("Writing image to {}.{}/{}".format(args.s3_endpoint, args.bucket_name, args.bucket_path))
 		upload_s3(image, args)
@@ -120,7 +120,7 @@ def main():
 	log = logging.getLogger(__name__)
 
 	if (args.file == False) and (args.ftp == False) and (args.s3 == False):
-		logs.fatal("You must select an output method (or multiple output methods) (--file, --ftp or --s3)")
+		log.fatal("You must select an output method (or multiple output methods) (--file, --ftp or --s3)")
 		exit()
 
 	process(log, args)
