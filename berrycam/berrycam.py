@@ -26,6 +26,13 @@ def acquire_image(log, args):
 
 def upload_s3(data, args):
 	try:
+		if args.access_key in ['', None] or args.secret_key in ['', None]:
+			log.fatal('Access key or secret key are blank. Unable to authenticate.')
+			exit()
+		if args.bucket_name in ['', None] or args.bucket_path in ['', None]:
+			log.fatal('Bucket name or path are blank. Unable to upload data.')
+			exit()
+
 		s3 = boto3.client(
 			's3',
 			endpoint_url='https://{}'.format(args.s3_endpoint),
@@ -40,7 +47,11 @@ def upload_s3(data, args):
 		return False
 
 def upload_ftp(data, args):
+
 	try:
+		if args.ftp_server in ['', None]:
+			log.fatal('A blank hostname for the FTP server was provided. Unable to connect.')
+			exit()
 		bytes_stream = BytesIO(data)
 		ftp = FTP(args.ftp_server)
 		ftp.login(args.ftp_username, args.ftp_password)
