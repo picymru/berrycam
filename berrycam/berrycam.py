@@ -101,7 +101,7 @@ def main():
 
 	# Save to FTP
 	parser.add_argument("--ftp", help="write captured image to ftp", action="store_true")
-	parser.add_argument("--ftp-server", "-s", default="webcam.wunderground.com", help="ftp server hostname")
+	parser.add_argument("--ftp-server", "-s", default="", help="ftp server hostname")
 	parser.add_argument("--ftp-username", "-u", default=os.getenv('FTP_USERNAME', ''), help="ftp username")
 	parser.add_argument("--ftp-password", "-p", default=os.getenv('FTP_PASSWORD', ''), help="ftp password")
 	
