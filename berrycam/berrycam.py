@@ -31,8 +31,7 @@ def upload_file(data, args):
 
 	try:
 		with open(args.file_name, 'wb') as f:
-			image = image
-			f.write(image)
+			f.write(data)
 			f.close()
 	except:
 		log.fatal("Unable to save image to filesystem. Please check location is writable")
