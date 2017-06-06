@@ -7,7 +7,7 @@ build-docs:
 
 .PHONY: build
 build:
-	python setup.py sdist
+	python setup.py bdist_wheel --universal
 
 .PHONY: upload-pypi
 upload-pypi:
