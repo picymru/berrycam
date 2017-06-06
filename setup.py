@@ -6,6 +6,7 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
+import re
 
 here = path.abspath(path.dirname(__file__))
 
@@ -13,13 +14,17 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+# And get version information from the Makefile
+with open(path.join(here, 'Makefile'), encoding='utf-8') as f:
+    version = re.findall('VERSION\s\:\=\s([\d.]*)', f.read())[0]
+
 setup(
     name='berrycam',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.3.0',
+    version=version,
 
     description='berrycam makes taking pictures with your Raspberry Pi easy!',
     long_description=long_description,
