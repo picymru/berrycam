@@ -1,5 +1,5 @@
 NAME := berrycam
-VERSION := 0.3.1
+VERSION := 0.3.2
 
 .PHONY: build-docs
 build-docs:
@@ -11,4 +11,4 @@ build:
 
 .PHONY: upload-pypi
 upload-pypi:
-	twine upload dist/${NAME}-${VERSION}.tar.gz
+	twine upload dist/${NAME}-${VERSION}-py2.py3-none-any.whl
