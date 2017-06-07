@@ -8,14 +8,12 @@ from ftplib import FTP
 
 def acquire_image(log, args):
 	output_stream = BytesIO()
-	camera = PiCamera()
 	try:
+		camera = PiCamera()
 		camera.resolution = (args.res_width, args.res_height)
-		camera.start_preview()
-		# Camera warm-up time
+		# Camera warm-up time for automatic exposure
 		sleep(2)
 		camera.capture(output_stream, 'jpeg')
-		camera.stop_preview()
 		output_stream.seek(0)
 		return output_stream.getvalue()
 	except:
